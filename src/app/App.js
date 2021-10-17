@@ -11,9 +11,9 @@ import LoadingIndicator from "../common/LoadingIndicator";
 import { getCurrentUser } from "../util/APIUtils";
 import { ACCESS_TOKEN } from "../constants";
 import PrivateRoute from "../common/PrivateRoute";
-import Alert from "react-s-alert";
-import "react-s-alert/dist/s-alert-default.css";
-import "react-s-alert/dist/s-alert-css-effects/slide.css";
+import Alert from "react-s-alert-v3";
+import "react-s-alert-v3/dist/s-alert-default.css";
+import "react-s-alert-v3/dist/s-alert-css-effects/slide.css";
 import "./App.css";
 
 class App extends Component {

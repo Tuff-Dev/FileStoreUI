@@ -8,7 +8,7 @@ import {
 import { signup } from "../../util/APIUtils";
 // import fbLogo from "../../img/fb-logo.png";
 import googleLogo from "../../img/google-logo.png";
-import Alert from "react-s-alert";
+import Alert from "react-s-alert-v3";
 
 class Signup extends Component {
   render() {

@@ -10,7 +10,7 @@ import { Link, Redirect } from "react-router-dom";
 // import fbLogo from "../../img/fb-logo.png";
 import googleLogo from "../../img/google-logo.png";
 // import githubLogo from "../../img/github-logo.png";
-import Alert from "react-s-alert";
+import Alert from "react-s-alert-v3";
 
 class Login extends Component {
   componentDidMount() {
