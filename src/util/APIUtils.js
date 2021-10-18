@@ -51,11 +51,3 @@ export function signup(signupRequest) {
     body: JSON.stringify(signupRequest),
   });
 }
-
-export function clubSignup(signupRequest) {
-  return request({
-    url: API_BASE_URL + "/club-signup",
-    method: "POST",
-    body: JSON.stringify(signupRequest),
-  });
-}

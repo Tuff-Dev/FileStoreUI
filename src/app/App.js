@@ -1,5 +1,6 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Route, Switch } from "react-router-dom";
+import { getCurrentUser } from "../util/APIUtils";
 import AppHeader from "../common/AppHeader";
 import Home from "../home/Home";
 import Login from "../pages/login/Login";
@@ -8,99 +9,78 @@ import Profile from "../pages/profile/Profile";
 import OAuth2RedirectHandler from "../pages/oauth2/OAuth2RedirectHandler";
 import NotFound from "../common/NotFound";
 import LoadingIndicator from "../common/LoadingIndicator";
-import { getCurrentUser } from "../util/APIUtils";
-import { ACCESS_TOKEN } from "../constants";
 import PrivateRoute from "../common/PrivateRoute";
+import AuthContext from "../store/AuthContext";
 import Alert from "react-s-alert-v3";
 import "react-s-alert-v3/dist/s-alert-default.css";
 import "react-s-alert-v3/dist/s-alert-css-effects/slide.css";
 import "./App.css";
+import { ACCESS_TOKEN } from "../constants";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      authenticated: false,
-      currentUser: null,
-      loading: false,
-    };
+const App = () => {
+  const authCtx = useContext(AuthContext);
 
-    this.loadCurrentlyLoggedInUser = this.loadCurrentlyLoggedInUser.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
-  }
+  const [loading, setLoading] = useState(true);
 
-  loadCurrentlyLoggedInUser() {
-    this.setState({
-      loading: true,
-    });
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+  const loadCurrentUser = async () => {
+    setLoading(true);
+
+    await delay(1000);
 
     getCurrentUser()
       .then((response) => {
-        console.log(response);
-        this.setState({
-          currentUser: response,
-          authenticated: true,
-          loading: false,
-        });
+        authCtx.setCurrentUser(response);
       })
-      .catch((error) => {
-        this.setState({
-          loading: false,
-        });
-      });
-  }
+      .catch((error) => {})
+      .finally(setLoading(false));
+  };
 
-  handleLogout() {
+  const logoutHandler = () => {
     localStorage.removeItem(ACCESS_TOKEN);
-    this.setState({
-      authenticated: false,
-      currentUser: null,
-    });
+    authCtx.setCurrentUser(null);
     Alert.success("You're safely logged out!");
-  }
+  };
 
-  componentDidMount() {
-    this.loadCurrentlyLoggedInUser();
-  }
+  // On initial load, check localStorage for authenticated user
+  useEffect(() => {
+    loadCurrentUser();
+  }, []);
 
-  render() {
-    if (this.state.loading) {
-      return <LoadingIndicator />;
-    }
-
+  if (loading) {
+    console.log("App is loading.");
+    return <LoadingIndicator />;
+  } else {
+    console.log("Returning app");
     return (
       <div className="app">
         <div className="app-top-box">
-          <AppHeader
-            authenticated={this.state.authenticated}
-            onLogout={this.handleLogout}
-          />
+          <AppHeader onLogout={logoutHandler} />
         </div>
         <div className="app-body">
           <Switch>
             <Route exact path="/" component={Home}></Route>
             <PrivateRoute
+              authenticated={authCtx.authenticated}
               path="/profile"
-              authenticated={this.state.authenticated}
-              currentUser={this.state.currentUser}
               component={Profile}
             ></PrivateRoute>
             <Route
               path="/login"
-              render={(props) => (
-                <Login authenticated={this.state.authenticated} {...props} />
-              )}
+              render={(props) => <Login {...props} />}
             ></Route>
-            <Route
-              path="/signup"
-              render={(props) => (
-                <Signup authenticated={this.state.authenticated} {...props} />
-              )}
-            ></Route>
+            {/* <Route
+                path="/signup"
+                render={(props) => (
+                  <Signup authenticated={this.state.authenticated} {...props} />
+                )}
+              ></Route> */}
             <Route
               path="/oauth2/redirect"
               component={OAuth2RedirectHandler}
             ></Route>
+            {/* DEFAULT ROUTE */}
             <Route component={NotFound}></Route>
           </Switch>
         </div>
@@ -114,6 +94,6 @@ class App extends Component {
       </div>
     );
   }
-}
+};
 
 export default App;
