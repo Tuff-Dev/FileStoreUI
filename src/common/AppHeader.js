@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import React, { Component, useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import AuthContext from "../store/AuthContext";
@@ -19,7 +20,9 @@ const AppHeader = (props) => {
             {authCtx.authenticated ? (
               <ul>
                 <li>
-                  <NavLink to="/files">Files</NavLink>
+                  <NavLink to="/files">
+                    <Button variant="outlined">Files</Button>
+                  </NavLink>
                 </li>
                 <li>
                   <NavLink to="/profile">Profile</NavLink>

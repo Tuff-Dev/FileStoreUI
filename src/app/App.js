@@ -73,9 +73,7 @@ const App = () => {
           <Route path="/login" render={(props) => <Login {...props} />}></Route>
           <Route
             path="/signup"
-            render={(props) => (
-              <Signup authenticated={this.state.authenticated} {...props} />
-            )}
+            render={(props) => <Signup {...props} />}
           ></Route>
           <Route
             path="/oauth2/redirect"

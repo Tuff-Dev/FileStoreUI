@@ -7,6 +7,8 @@ import { getFiles } from "../../util/APIUtils";
 import LoadingIndicator from "../../common/LoadingIndicator";
 import Folder from "./FolderItem";
 import FileItem from "./FileItem";
+import Button from "@mui/material/Button";
+import { Divider, Grid } from "@mui/material";
 
 const BreadcrumbLink = (props) => {
   const clickHandler = () => {
@@ -99,12 +101,25 @@ const Files = () => {
   return (
     <div className={classes.files}>
       <div className={classes["folder-path"]}>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link underline="hover" color="inherit" onClick={goHome}>
-            Home
-          </Link>
-          {breadcrumbs}
-        </Breadcrumbs>
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="flex-start"
+        >
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link underline="hover" color="inherit" onClick={goHome}>
+              Home
+            </Link>
+            {breadcrumbs}
+          </Breadcrumbs>
+          <div className={classes["folder-path__upload"]}>
+            <Button variant="outlined">Create new folder</Button>
+            <Button variant="contained">Upload File</Button>
+          </div>
+        </Grid>
+
+        <Divider />
       </div>
       <div className={classes["item-list"]}>
         <List>{combinedFilesAndFolders}</List>

@@ -5,7 +5,13 @@
 }
 
 .folder-path {
+  padding: 10px;
 }
 
-.item-list {
+.folder-path__upload {
+  margin-bottom: 8px;
+}
+
+.folder-path__upload > button {
+  margin: 5px;
 }

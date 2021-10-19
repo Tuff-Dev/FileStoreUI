@@ -25,6 +25,7 @@ const FileItem = (props) => {
 
   const handleDownload = () => {
     downloadFile(props.file.internalFileReference);
+    setShowConfirm(false);
   };
 
   return (
@@ -50,7 +51,7 @@ const FileItem = (props) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleDownload} autoFocus>
+          <Button onClick={handleDownload} variant="contained" autoFocus>
             Download
           </Button>
         </DialogActions>
