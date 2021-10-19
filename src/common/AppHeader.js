@@ -19,6 +19,9 @@ const AppHeader = (props) => {
             {authCtx.authenticated ? (
               <ul>
                 <li>
+                  <NavLink to="/files">Files</NavLink>
+                </li>
+                <li>
                   <NavLink to="/profile">Profile</NavLink>
                 </li>
                 <li>

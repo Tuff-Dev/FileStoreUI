@@ -16,6 +16,7 @@ import "react-s-alert-v3/dist/s-alert-default.css";
 import "react-s-alert-v3/dist/s-alert-css-effects/slide.css";
 import "./App.css";
 import { ACCESS_TOKEN } from "../constants";
+import Files from "../pages/files/Files";
 
 const App = () => {
   const authCtx = useContext(AuthContext);
@@ -49,51 +50,50 @@ const App = () => {
   }, []);
 
   if (loading) {
-    console.log("App is loading.");
     return <LoadingIndicator />;
-  } else {
-    console.log("Returning app");
-    return (
-      <div className="app">
-        <div className="app-top-box">
-          <AppHeader onLogout={logoutHandler} />
-        </div>
-        <div className="app-body">
-          <Switch>
-            <Route exact path="/" component={Home}></Route>
-            <PrivateRoute
-              authenticated={authCtx.authenticated}
-              path="/profile"
-              component={Profile}
-            ></PrivateRoute>
-            <Route
-              path="/login"
-              render={(props) => <Login {...props} />}
-            ></Route>
-            {/* <Route
-                path="/signup"
-                render={(props) => (
-                  <Signup authenticated={this.state.authenticated} {...props} />
-                )}
-              ></Route> */}
-            <Route
-              path="/oauth2/redirect"
-              component={OAuth2RedirectHandler}
-            ></Route>
-            {/* DEFAULT ROUTE */}
-            <Route component={NotFound}></Route>
-          </Switch>
-        </div>
-        <Alert
-          stack={{ limit: 3 }}
-          timeout={5000}
-          position="top-right"
-          effect="slide"
-          offset={65}
-        />
-      </div>
-    );
   }
+  return (
+    <div className="app">
+      <div className="app-top-box">
+        <AppHeader onLogout={logoutHandler} />
+      </div>
+      <div className="app-body">
+        <Switch>
+          <Route exact path="/" component={Home}></Route>
+          <PrivateRoute
+            authenticated={authCtx.authenticated}
+            path="/profile"
+            component={Profile}
+          ></PrivateRoute>
+          <PrivateRoute
+            authenticated={authCtx.authenticated}
+            path="/files"
+            component={Files}
+          ></PrivateRoute>
+          <Route path="/login" render={(props) => <Login {...props} />}></Route>
+          <Route
+            path="/signup"
+            render={(props) => (
+              <Signup authenticated={this.state.authenticated} {...props} />
+            )}
+          ></Route>
+          <Route
+            path="/oauth2/redirect"
+            component={OAuth2RedirectHandler}
+          ></Route>
+          {/* DEFAULT ROUTE */}
+          <Route component={NotFound}></Route>
+        </Switch>
+      </div>
+      <Alert
+        stack={{ limit: 3 }}
+        timeout={5000}
+        position="top-right"
+        effect="slide"
+        offset={65}
+      />
+    </div>
+  );
 };
 
 export default App;

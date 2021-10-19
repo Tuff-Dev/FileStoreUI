@@ -14,7 +14,6 @@ const request = (options) => {
 
   const defaults = { headers: headers };
   options = Object.assign({}, defaults, options);
-
   return fetch(options.url, options).then((response) =>
     response.json().then((json) => {
       if (!response.ok) {
@@ -50,4 +49,41 @@ export function signup(signupRequest) {
     method: "POST",
     body: JSON.stringify(signupRequest),
   });
+}
+
+export function getFiles() {
+  return request({
+    url: API_BASE_URL + "/user-files",
+    method: "GET",
+  });
+}
+
+export function downloadFile(internalFileRef) {
+  const url = API_BASE_URL + "/files/ref?file=" + internalFileRef;
+
+  return fetch(url, {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem(ACCESS_TOKEN),
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return Promise.reject(response);
+      }
+      return response.blob();
+    })
+    .then((blob) => {
+      const url = window.URL.createObjectURL(new Blob([blob]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", internalFileRef);
+      // Append to html link element page
+      document.body.appendChild(link);
+
+      // Start download
+      link.click();
+
+      // Clean up and remove the link
+      link.parentNode.removeChild(link);
+    });
 }
