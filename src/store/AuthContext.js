@@ -3,21 +3,24 @@ import { getCurrentUser } from "../util/APIUtils";
 const AuthContext = React.createContext({
   authenticated: false,
   currentUser: {},
+  loading: false,
   setCurrentUser: () => {},
   setAuthenticated: () => {},
+  setLoading: () => {},
 });
 
 export const AuthContextProvider = (props) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setCurrentUser] = useState();
+  const [loading, setLoading] = useState(false);
 
   const setUser = (user) => {
-    setCurrentUser(user);
     if (user) {
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);
     }
+    setCurrentUser(user);
   };
 
   const setAuthenticatedHandler = (isAuthenticated) => {
@@ -35,8 +38,10 @@ export const AuthContextProvider = (props) => {
   const authContext = {
     authenticated: isAuthenticated,
     currentUser: user,
+    loading: loading,
     setCurrentUser: setUser,
     setAuthenticated: setAuthenticatedHandler,
+    setLoading: setLoading,
   };
 
   return (

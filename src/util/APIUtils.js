@@ -87,3 +87,26 @@ export function downloadFile(internalFileRef) {
       link.parentNode.removeChild(link);
     });
 }
+
+export function uploadFile(file, path, onUploadProgress) {
+  let formData = new FormData();
+  formData.append("file", file);
+  formData.append("path", path);
+
+  const headers = new Headers({
+    Authorization: "Bearer " + localStorage.getItem(ACCESS_TOKEN),
+  });
+
+  const defaults = { headers: headers };
+  let options = {
+    method: "POST",
+    body: formData,
+  };
+  options = Object.assign({}, defaults, options);
+  return fetch(API_BASE_URL + "/files", options).then((response) => {
+    if (!response.ok) {
+      return Promise.reject(response);
+    }
+    return response;
+  });
+}

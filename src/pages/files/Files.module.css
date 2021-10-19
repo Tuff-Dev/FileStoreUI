@@ -1,5 +1,4 @@
 .files {
-  width: 90vw;
   margin: 0 auto;
   margin-top: 15px;
 }
@@ -14,4 +13,11 @@
 
 .folder-path__upload > button {
   margin: 5px;
+}
+
+.modal {
+  width: 80vw;
+}
+
+.progress {
 }

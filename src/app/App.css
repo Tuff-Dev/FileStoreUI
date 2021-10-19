@@ -1,7 +1,14 @@
-.s-alert-box {
-    min-width: 250px;
+.app {
+  width: 90vw;
+  margin: 0 auto;
+  max-width: 1300px;
 }
 
-.s-alert-close::before, .s-alert-close::after {
-    width: 2px;
+.s-alert-box {
+  min-width: 250px;
+}
+
+.s-alert-close::before,
+.s-alert-close::after {
+  width: 2px;
 }

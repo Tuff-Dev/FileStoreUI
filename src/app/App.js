@@ -21,21 +21,16 @@ import Files from "../pages/files/Files";
 const App = () => {
   const authCtx = useContext(AuthContext);
 
-  const [loading, setLoading] = useState(true);
-
-  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
-
-  const loadCurrentUser = async () => {
-    setLoading(true);
-
-    await delay(1000);
+  const loadCurrentUser = () => {
+    authCtx.setLoading(true);
 
     getCurrentUser()
       .then((response) => {
         authCtx.setCurrentUser(response);
+        authCtx.setLoading(false);
       })
       .catch((error) => {})
-      .finally(setLoading(false));
+      .finally(authCtx.setLoading(false));
   };
 
   const logoutHandler = () => {
@@ -49,9 +44,10 @@ const App = () => {
     loadCurrentUser();
   }, []);
 
-  if (loading) {
+  if (authCtx.loading || !authCtx.currentUser) {
     return <LoadingIndicator />;
   }
+
   return (
     <div className="app">
       <div className="app-top-box">

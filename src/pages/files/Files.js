@@ -9,6 +9,7 @@ import Folder from "./FolderItem";
 import FileItem from "./FileItem";
 import Button from "@mui/material/Button";
 import { Divider, Grid } from "@mui/material";
+import UploadModal from "./UploadModal";
 
 const BreadcrumbLink = (props) => {
   const clickHandler = () => {
@@ -26,6 +27,15 @@ const Files = () => {
   const [loading, setLoading] = useState(false);
   const [userFiles, setUserFiles] = useState();
   const [currentPath, setCurrentPath] = useState([]);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+
+  const closeUploadModalHandler = () => {
+    setShowUploadModal(false);
+  };
+
+  const showUploadModalHandler = () => {
+    setShowUploadModal(true);
+  };
 
   const changeFolderHandler = (folderName) => {
     setCurrentPath((path) => {
@@ -100,6 +110,10 @@ const Files = () => {
 
   return (
     <div className={classes.files}>
+      <UploadModal
+        open={showUploadModal}
+        handleClose={closeUploadModalHandler}
+      />
       <div className={classes["folder-path"]}>
         <Grid
           container
@@ -114,8 +128,12 @@ const Files = () => {
             {breadcrumbs}
           </Breadcrumbs>
           <div className={classes["folder-path__upload"]}>
-            <Button variant="outlined">Create new folder</Button>
-            <Button variant="contained">Upload File</Button>
+            <Button variant="outlined" disabled>
+              Create new folder
+            </Button>
+            <Button variant="contained" onClick={showUploadModalHandler}>
+              Upload File
+            </Button>
           </div>
         </Grid>
 
