@@ -21,17 +21,19 @@ import Files from "../pages/files/Files";
 const App = () => {
   const authCtx = useContext(AuthContext);
 
-  const loadCurrentUser = () => {
-    authCtx.setLoading(true);
+  const [loading, setLoading] = useState(true);
 
-    getCurrentUser()
-      .then((response) => {
-        authCtx.setCurrentUser(response);
-        authCtx.setLoading(false);
-      })
-      .catch((error) => {})
-      .finally(authCtx.setLoading(false));
-  };
+  useEffect(() => {
+    if (!authCtx.authenticated) {
+      getCurrentUser()
+        .then((response) => {
+          authCtx.setCurrentUser(response);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [authCtx]);
 
   const logoutHandler = () => {
     localStorage.removeItem(ACCESS_TOKEN);
@@ -39,12 +41,7 @@ const App = () => {
     Alert.success("You're safely logged out!");
   };
 
-  // On initial load, check localStorage for authenticated user
-  useEffect(() => {
-    loadCurrentUser();
-  }, []);
-
-  if (authCtx.loading || !authCtx.currentUser) {
+  if (loading) {
     return <LoadingIndicator />;
   }
 

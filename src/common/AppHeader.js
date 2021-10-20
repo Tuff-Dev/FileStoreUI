@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import React, { Component, useContext } from "react";
+import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import AuthContext from "../store/AuthContext";
 import "./AppHeader.css";
@@ -25,10 +25,14 @@ const AppHeader = (props) => {
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/profile">Profile</NavLink>
+                  <NavLink to="/profile">
+                    <Button variant="text">Profile</Button>
+                  </NavLink>
                 </li>
                 <li>
-                  <a onClick={props.onLogout}>Logout</a>
+                  <Button variant="text" onClick={props.onLogout}>
+                    Logout
+                  </Button>
                 </li>
               </ul>
             ) : (

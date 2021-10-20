@@ -12,7 +12,7 @@ const AuthContext = React.createContext({
 export const AuthContextProvider = (props) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setCurrentUser] = useState();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const setUser = (user) => {
     if (user) {
@@ -32,6 +32,9 @@ export const AuthContextProvider = (props) => {
       })
       .catch((error) => {
         setIsAuthenticated(false);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 

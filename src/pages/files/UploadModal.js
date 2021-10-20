@@ -6,7 +6,6 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
-import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import { useState } from "react";
@@ -24,7 +23,6 @@ const UploadModal = (props) => {
 
   const uploadHandler = () => {
     let currentFile = selectedFiles[0];
-    console.log(currentFile);
 
     setProgress(0);
     setCurrentFile(currentFile);

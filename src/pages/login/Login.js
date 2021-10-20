@@ -23,7 +23,7 @@ const Login = (props) => {
         });
       }, 100);
     }
-  }, []);
+  }, [props.history, props.location]);
 
   if (authContext.authenticated) {
     return (
