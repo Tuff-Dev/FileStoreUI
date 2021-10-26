@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { getCurrentUser } from "../util/APIUtils";
 import AppHeader from "../common/AppHeader";
 import Home from "../home/Home";
@@ -29,6 +30,9 @@ const App = () => {
         .then((response) => {
           authCtx.setCurrentUser(response);
         })
+        .catch((err) => {
+          authCtx.setCurrentUser(null);
+        })
         .finally(() => {
           setLoading(false);
         });
@@ -47,42 +51,47 @@ const App = () => {
 
   return (
     <div className="app">
-      <div className="app-top-box">
-        <AppHeader onLogout={logoutHandler} />
-      </div>
-      <div className="app-body">
-        <Switch>
-          <Route exact path="/" component={Home}></Route>
-          <PrivateRoute
-            authenticated={authCtx.authenticated}
-            path="/profile"
-            component={Profile}
-          ></PrivateRoute>
-          <PrivateRoute
-            authenticated={authCtx.authenticated}
-            path="/files"
-            component={Files}
-          ></PrivateRoute>
-          <Route path="/login" render={(props) => <Login {...props} />}></Route>
-          <Route
-            path="/signup"
-            render={(props) => <Signup {...props} />}
-          ></Route>
-          <Route
-            path="/oauth2/redirect"
-            component={OAuth2RedirectHandler}
-          ></Route>
-          {/* DEFAULT ROUTE */}
-          <Route component={NotFound}></Route>
-        </Switch>
-      </div>
-      <Alert
-        stack={{ limit: 3 }}
-        timeout={5000}
-        position="top-right"
-        effect="slide"
-        offset={65}
-      />
+      <Router>
+        <div className="app-top-box">
+          <AppHeader onLogout={logoutHandler} />
+        </div>
+        <div className="app-body">
+          <Switch>
+            <Route exact path="/" component={Home}></Route>
+            <PrivateRoute
+              authenticated={authCtx.authenticated}
+              path="/profile"
+              component={Profile}
+            ></PrivateRoute>
+            <PrivateRoute
+              authenticated={authCtx.authenticated}
+              path="/files"
+              component={Files}
+            ></PrivateRoute>
+            <Route
+              path="/login"
+              render={(props) => <Login {...props} />}
+            ></Route>
+            <Route
+              path="/signup"
+              render={(props) => <Signup {...props} />}
+            ></Route>
+            <Route
+              path="/oauth2/redirect"
+              component={OAuth2RedirectHandler}
+            ></Route>
+            {/* DEFAULT ROUTE */}
+            <Route component={NotFound}></Route>
+          </Switch>
+        </div>
+        <Alert
+          stack={{ limit: 3 }}
+          timeout={5000}
+          position="top-right"
+          effect="slide"
+          offset={65}
+        />
+      </Router>
     </div>
   );
 };

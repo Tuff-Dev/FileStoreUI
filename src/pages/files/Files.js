@@ -70,28 +70,37 @@ const Files = () => {
   if (userFiles) {
     let workingLevel = userFiles;
 
-    currentPath.forEach((pathSegment) => {
-      workingLevel = workingLevel.subdirectories.find(
-        (el) => el.folderName === pathSegment
-      );
-    });
+    for (let i = 0; i < currentPath.length; i++) {
+      if (workingLevel.subdirectories) {
+        workingLevel = workingLevel.subdirectories.find(
+          (el) => el.folderName === currentPath[i]
+        );
+      } else {
+        break;
+      }
+    }
 
-    const folders = workingLevel.subdirectories.map((dir) => {
-      return (
-        <Folder
-          folder={dir}
-          changeFolder={changeFolderHandler}
-          key={dir.folderName}
-        />
-      );
-    });
+    let folders = [];
+    if (workingLevel.subdirectories) {
+      folders = workingLevel.subdirectories.map((dir) => {
+        return (
+          <Folder
+            folder={dir}
+            changeFolder={changeFolderHandler}
+            key={dir.folderName}
+          />
+        );
+      });
+    }
 
-    combinedFilesAndFolders = [
-      ...folders,
-      workingLevel.files.map((item) => {
+    let files = [];
+    if (workingLevel.files) {
+      files = workingLevel.files.map((item) => {
         return <FileItem key={item.internalFileReference} file={item} />;
-      }),
-    ];
+      });
+    }
+
+    combinedFilesAndFolders = [...folders, ...files];
   }
 
   useEffect(() => {
@@ -140,7 +149,7 @@ const Files = () => {
         <Divider />
       </div>
       <div className={classes["item-list"]}>
-        <List>{combinedFilesAndFolders}</List>
+        <List data-testid="files">{combinedFilesAndFolders}</List>
       </div>
     </div>
   );
